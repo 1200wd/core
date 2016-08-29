@@ -47,7 +47,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception       $previous   Previous exception
 	 * @return  void
 	 */
-	public function __construct($message = "", array $variables = NULL, $code = 0, Exception $previous = NULL)
+	public function __construct($message = "", array $variables = NULL, $code = 0, Throwable $previous = NULL)
 	{
 		// Set the message
 		$message = __($message, $variables);
@@ -81,7 +81,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  void
 	 */
-	public static function handler(Exception $e)
+	public static function handler(Throwable $e)
 	{
 		$response = Kohana_Exception::_handler($e);
 
@@ -99,7 +99,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  Response
 	 */
-	public static function _handler(Exception $e)
+	public static function _handler(Throwable $e)
 	{
 		try
 		{
@@ -111,7 +111,7 @@ class Kohana_Kohana_Exception extends Exception {
 
 			return $response;
 		}
-		catch (Exception $e)
+		catch (Throwable $e)
 		{
 			/**
 			 * Things are going *really* badly for us, We now have no choice
@@ -137,7 +137,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   int        $level
 	 * @return  void
 	 */
-	public static function log(Exception $e, $level = Log::EMERGENCY)
+	public static function log(Throwable $e, $level = Log::EMERGENCY)
 	{
 		if (is_object(Kohana::$log))
 		{
@@ -157,10 +157,10 @@ class Kohana_Kohana_Exception extends Exception {
 	 *
 	 * Error [ Code ]: Message ~ File [ Line ]
 	 *
-	 * @param   Exception  $e
+	 * @param   Throwable  $e
 	 * @return  string
 	 */
-	public static function text(Exception $e)
+	public static function text(Throwable $e)
 	{
 		return sprintf('%s [ %s ]: %s ~ %s [ %d ]',
 			get_class($e), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
@@ -170,10 +170,10 @@ class Kohana_Kohana_Exception extends Exception {
 	 * Get a Response object representing the exception
 	 *
 	 * @uses    Kohana_Exception::text
-	 * @param   Exception  $e
+	 * @param   Throwable  $e
 	 * @return  Response
 	 */
-	public static function response(Exception $e)
+	public static function response(Throwable $e)
 	{
 		try
 		{
@@ -274,7 +274,7 @@ class Kohana_Kohana_Exception extends Exception {
 			// Set the response body
 			$response->body($view->render());
 		}
-		catch (Exception $e)
+		catch (Throwable $e)
 		{
 			/**
 			 * Things are going badly for us, Lets try to keep things under control by
